@@ -1,38 +1,59 @@
+const fs = require("fs");
+
 class MapReduce {
 
-    {
-    const words = [];
-    for (let i = 0; i < this.N; i++) {
-      words.push(this.generateRandomWord());
-    }
+  constructor(inputFileName, outputFileName) {
+    this.inputFileName = inputFileName;
+    this.outputFileName = outputFileName;
+    this.intermediateStream = null;
+    this.outputStream = null;
+    this.mapper = {};
+  }
 
-    const chunks = Math.ceil(words.length / this.split);
+  createIntermediateStream = function() {
+    this.intermediateStream = fs.createWriteStream(this.outputFileName + ".tmp", { flags: "a" });
+  }
 
-    for (let i = 0; i < this.split; i++) {
-      const fileName = path.join(__dirname + "/files", `file_part_${i + 1}.txt`);
-      const start = i * chunks;
-      const end = (i + 1) * chunks;
-      const chunkWords = words.slice(start, end).join(' ');
+  createOutputStream = function() {
+    this.outputStream = fs.createWriteStream(this.outputFileName + ".txt", { flags: "a" });
+  }
 
-      fs.writeFileSync(fileName, chunkWords);
-      console.log(`File ${i + 1} created: ${fileName}`);
-    }
+  closeItermediateStream = function() {
+    this.intermediateStream.end();
+  }
 
-    emitIntermediate = function() {
-        fs.writeFile
-    }
+  closeOutputStream = function() {
+    this.outputStream.end();
+  }
 
-    emit = function() {
+  collect = function() {
+    const intermediateOutput = fs.readFileSync(this.outputFileName + ".tmp", { encoding: "utf-8" });
+    const lines = intermediateOutput.split(/\r?\n/);
+    lines.forEach(line => {
+      const [ key, value ] = line.split(" ");
+      this.mapper[key] = value;
+    });
+  }
 
-    }
+  emitIntermediate = function(key, value) {
+    if(this.intermediateStream == null) this.createIntermediateStream();
 
-    map = function(key, value) {
+    this.intermediateStream.write(`${key} ${value}\n`);
+  }
 
-    }
+  emit = function(key, value) {
+    if(this.outputStream == null) this.createOutputStream();
 
-    reduce = function(key, values) {
+    this.outputStream.write(`${key} ${value}\n`);
+  }
 
-    }
+  map = function(key, value) {
+
+  }
+
+  reduce = function(key, values) {
+
+  }
 
 }
 

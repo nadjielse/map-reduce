@@ -2,18 +2,22 @@ const MapReduce = require("./MapReduce");
 
 class WordCounter extends MapReduce {
 
-    map = function(key, value) {
-        const words = value.split(" ");
+  constructor(inputFileName, outputFileName) {
+    super(inputFileName, outputFileName);
+  }
 
-        words.forEach(word => {
-            console.log(word)
-            emitIntermediate(word, "1");
-        });
-    }
+  map = function(key, value) {
+    // const words = value.split(" ");
 
-    reduce = function(key, values) {
+    // words.forEach(word => {
+    //   console.log(word)
+    //   emitIntermediate(word, "1");
+    // });
+  }
 
-    }
+  reduce = function(key, values) {
+
+  }
 
 }
 
