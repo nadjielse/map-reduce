@@ -27,6 +27,6 @@ const fileGenerator = new FileGenerator(split, N, alphabet, minSize, maxSize);
 
 
 // TEST
-const wordCounter = new WordCounter("file_part_1", "output")
-wordCounter.readInputFile();
+const wordCounter = new WordCounter("file_part_1", "output");
 console.log(wordCounter.inputFileContent)
+wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);

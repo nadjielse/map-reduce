@@ -20,6 +20,8 @@ class MapReduce {
     this.outputStream = null;
 
     this.mapper = {};
+
+    this.readInputFile();
   }
 
   /**
@@ -90,6 +92,11 @@ class MapReduce {
     this.outputStream.write(`${key} ${value}\n`);
   }
 
+  /**
+   * Abstração da função map, que deve ser definida pelo usuário.
+   * @param {string} key Uma chave que pode ser usada na função.
+   * @param {string} value Um valor que pode ser usado na função.
+   */
   map = function(key, value) {
 
   }
