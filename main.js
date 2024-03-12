@@ -13,15 +13,9 @@ const maxSize = 8; // Tamanho máximo das palavras
 // Instância do FileGenerator
 const fileGenerator = new FileGenerator(split, N, alphabet, minSize, maxSize);
 
- // Gera o arquivo de texto dividido em partes
-fileGenerator.generateFile();
+// Gera o arquivo de texto dividido em partes
+//fileGenerator.generateFile();
 
-const filePart1 = fs.readFileSync(path.join(__dirname + "/files", `file_part_1.txt`), "utf-8");
-
-const wordCounter = new WordCounter("files/file_part_1", "output");
-wordCounter.createIntermediateStream()
-wordCounter.createOutputStream()
-wordCounter.collect()
 // wordCounter.map("", filePart1);
 
 // // Exemplo de como usar o MapReduce com os arquivos gerados
@@ -30,3 +24,9 @@ wordCounter.collect()
 // // Chama as funções Map e Reduce
 // mapReduce.run();
 
+
+
+// TEST
+const wordCounter = new WordCounter("file_part_1", "output")
+wordCounter.readInputFile();
+console.log(wordCounter.inputFileContent)

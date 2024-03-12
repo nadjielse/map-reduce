@@ -1,21 +1,41 @@
 const fs = require("fs");
+const path = require("path");
 
+/**
+  * Cria uma instância do MapReduce que lê de um arquivo e anexa o resultado em outro.
+  * @param {string} inputFileName O nome do arquivo de onde a entrada será lida.
+  * @param {string} outputFileName O nome do arquivo onde a saída será escrita.
+ */
 class MapReduce {
-
+  
   constructor(inputFileName, outputFileName) {
+    this.inputFolder = path.join(__dirname, "files");
+    this.outputFolder = path.join(__dirname, "result");
+
     this.inputFileName = inputFileName;
     this.outputFileName = outputFileName;
+
+    this.inputFileContent = "";
     this.intermediateStream = null;
     this.outputStream = null;
+
     this.mapper = {};
   }
 
+  /**
+   * Cria uma stream que permite anexar conteúdo ao arquivo de saída intermediário.
+   */
   createIntermediateStream = function() {
-    this.intermediateStream = fs.createWriteStream(this.outputFileName + ".tmp", { flags: "a" });
+    this.intermediateStream = fs.createWriteStream(
+      path.join(this.outputFolder, this.outputFileName + ".tmp"), { flags: "a" }
+    );
   }
 
+  /** Cria uma stream que permite anexar conteúdo ao arquivo de saída final. */
   createOutputStream = function() {
-    this.outputStream = fs.createWriteStream(this.outputFileName + ".txt", { flags: "a" });
+    this.outputStream = fs.createWriteStream(
+      path.join(this.outputFolder, this.outputFileName + ".txt"), { flags: "a" }
+    );
   }
 
   closeItermediateStream = function() {
@@ -26,6 +46,19 @@ class MapReduce {
     this.outputStream.end();
   }
 
+  /**
+   * Lê o arquivo de entrada e guarda seus dados na propriedade inputFileContent.
+   */
+  readInputFile = function() {
+    this.inputFileContent = fs.readFileSync(
+      path.join(this.inputFolder, this.inputFileName + ".txt"),
+      { encoding: "utf-8" }
+    );
+  }
+
+  /**
+   * Guarda as informações do arquivo intermediário na propriedade mapper desta classe.
+   */
   collect = function() {
     const intermediateOutput = fs.readFileSync(this.outputFileName + ".tmp", { encoding: "utf-8" });
     const lines = intermediateOutput.split(/\r?\n/);
@@ -35,12 +68,22 @@ class MapReduce {
     });
   }
 
+  /**
+   * Escreve um conjunto de chave e valor numa nova linha do arquivo intermediário.
+   * @param {string} key A chave que será associada ao valor.
+   * @param {string} value O valor que será associado à chave.
+   */
   emitIntermediate = function(key, value) {
     if(this.intermediateStream == null) this.createIntermediateStream();
 
     this.intermediateStream.write(`${key} ${value}\n`);
   }
 
+  /**
+   * Escreve um conjunto de chave e valor numa nova linha do arquivo final.
+   * @param {string} key A chave que será associada ao valor.
+   * @param {string} value O valor que será associado à chave.
+   */
   emit = function(key, value) {
     if(this.outputStream == null) this.createOutputStream();
 
