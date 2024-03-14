@@ -7,16 +7,15 @@ class WordCounter extends MapReduce {
   }
 
   map = function(key, value) {
-    const words = value.split(" ");
+    const words = value.split(/\s+/);
 
     words.forEach(word => {
-      console.log(word)
       this.emitIntermediate(word, "1");
     });
   }
 
   reduce = function(key, values) {
-
+    this.emit(key, values.reduce((prev, curr) => prev + curr));
   }
 
 }
