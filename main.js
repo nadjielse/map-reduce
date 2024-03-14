@@ -1,32 +1,27 @@
-const fs = require('fs');
+const fs = require("fs");
 const path = require("path");
-const FileGenerator = require('./fileGenerator');
-const WordCounter = require("./WordCounter");
+const FileGenerator = require("./FileGenerator");
+const MapReduce = require("./MapReduce");
 
 // Parâmetros para o FileGenerator
 const split = 3; // Número de arquivos em que o texto será dividido
 const N = 100; // Número de palavras a serem geradas
-const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split(''); // Lista de caracteres permitidos
+const alphabet = "abcdefghijklmnopqrstuvwxyz".split(""); // Lista de caracteres permitidos
 const minSize = 3; // Tamanho mínimo das palavras
 const maxSize = 8; // Tamanho máximo das palavras
 
 // Instância do FileGenerator
 const fileGenerator = new FileGenerator(split, N, alphabet, minSize, maxSize);
 
-// Gera o arquivo de texto dividido em partes
-//fileGenerator.generateFile();
+// Gerar os arquivos de entrada
+fileGenerator.generateFile();
 
-// wordCounter.map("", filePart1);
+// Nomes dos arquivos de entrada e saída
+const inputFileName = "file_part_";
+const outputFileName = "output";
 
-// // Exemplo de como usar o MapReduce com os arquivos gerados
-// const mapReduce = new MapReduce();
+// Criar uma instância do MapReduce
+const mapReduce = new MapReduce(inputFileName, outputFileName);
 
-// // Chama as funções Map e Reduce
-// mapReduce.run();
-
-
-
-// TEST
-const wordCounter = new WordCounter("file_part_1", "output");
-console.log(wordCounter.inputFileContent)
-wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);
+// Iniciar o processo de MapReduce
+mapReduce.startMapReduce();
