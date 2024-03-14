@@ -11,6 +11,8 @@ for(const word in wordCounter.mapper) {
   wordCounter.reduce(word, wordCounter.mapper[word]);
 }
 
+
+
 //console.log(wordCounter.mapper)
 
 // for (const key in wordCounter.mapper) {
