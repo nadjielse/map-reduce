@@ -15,7 +15,7 @@ class WordCounter extends MapReduce {
   }
 
   reduce = function(key, values) {
-    this.emit(key, values.reduce((prev, curr) => prev + curr));
+    this.emit(key, values.reduce((prev, curr) => Number(prev) + Number(curr)));
   }
 
 }

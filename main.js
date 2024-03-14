@@ -1,20 +1,25 @@
+const fs = require("fs");
+const path = require("path");
 const WordCounter = require("./WordCounter");
 
-// Criar uma instância do MapReduce
-const wordCounter = new WordCounter("file_part_1", "output");
+const inputFiles = fs.readdirSync(path.join(__dirname, "files"));
+const wordCounters = [];
 
-wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);
+inputFiles.forEach(inputFile => {
+  const inputFileName = inputFile.replace(".txt", "");
+  wordCounters.push(new WordCounter(inputFileName, "output"));
+});
 
-wordCounter.collect();
+wordCounters.forEach(wordCounter => {
+  if(wordCounter.inputFileName != "file_part_1") return;
 
-for(const word in wordCounter.mapper) {
-  wordCounter.reduce(word, wordCounter.mapper[word]);
-}
+  wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);
 
-
-
-//console.log(wordCounter.mapper)
-
-// for (const key in wordCounter.mapper) {
-//   wordCounter.reduce(key)
-// }
+  wordCounter.collect();
+  
+  console.log(wordCounter.mapper)
+  
+  for(const word in wordCounter.mapper) {
+    wordCounter.reduce(word, wordCounter.mapper[word]);
+  }
+})

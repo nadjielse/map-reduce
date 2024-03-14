@@ -76,8 +76,6 @@ class MapReduce {
     lines.forEach(line => {
       const [ key, value ] = line.split(" ");
 
-      console.log(key, value)
-
       if(key === undefined || value === undefined) return;
 
       if(this.mapper[key] === undefined) this.mapper[key] = [];
