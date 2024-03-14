@@ -6,7 +6,7 @@
   "scripts": {
     "generate-files": "node ./generateFiles.js",
     "pre-start": "rimraf ./output.tmp && rimraf ./output.txt",
-    "start": "node ./main.js"
+    "start": "npm run pre-start && node ./main.js"
   },
   "keywords": [],
   "author": "",

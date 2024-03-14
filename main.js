@@ -1,25 +1,13 @@
-const fs = require("fs");
-const path = require("path");
 const WordCounter = require("./WordCounter");
 
-const inputFiles = fs.readdirSync(path.join(__dirname, "files"));
-const wordCounters = [];
+const wordCounter = new WordCounter("file_part_1", "output");
 
-inputFiles.forEach(inputFile => {
-  const inputFileName = inputFile.replace(".txt", "");
-  wordCounters.push(new WordCounter(inputFileName, "output"));
-});
+wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);
 
-wordCounters.forEach(wordCounter => {
-  if(wordCounter.inputFileName != "file_part_1") return;
-
-  wordCounter.map(wordCounter.inputFileName, wordCounter.inputFileContent);
-
+setTimeout(() => {
   wordCounter.collect();
-  
-  console.log(wordCounter.mapper)
   
   for(const word in wordCounter.mapper) {
     wordCounter.reduce(word, wordCounter.mapper[word]);
   }
-})
+}, 1000);
