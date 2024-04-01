@@ -9,6 +9,7 @@ const words = process.argv?.[3] || 1000; // Número de palavras a serem geradas
 const alphabet = "abcdefghijklmnopqrstuvwxyz".split(""); // Lista de caracteres permitidos
 const minSize = 3; // Tamanho mínimo das palavras
 const maxSize = 5; // Tamanho máximo das palavras
+const wordsPerLine = 5; // palavras por linha
 
 // Instância do FileGenerator
 const fileGenerator = new FileGenerator(
@@ -16,7 +17,8 @@ const fileGenerator = new FileGenerator(
   words,
   alphabet,
   minSize,
-  maxSize
+  maxSize,
+  wordsPerLine
 );
 
 // Gerar os arquivos de entrada
